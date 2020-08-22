@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.telecom.Call
 import android.view.View
 import android.widget.Toast
+import android.widget.Toast.*
 import kotlinx.android.synthetic.main.activity_registration2.*
 import javax.security.auth.callback.Callback
+import com.example.hello3.RegistrationResponse as RegistrationResponse1
 
 class registration2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +31,7 @@ class registration2 : AppCompatActivity() {
                 .build()
 
             registerUser(requestBody)
-            Toast.makeText(baseContext, lastName, Toast.LENGTH_SHORT).show()
+            makeText(baseContext, lastName, LENGTH_SHORT).show()
         }
     }
 
@@ -37,28 +39,56 @@ class registration2 : AppCompatActivity() {
     fun registerUser(requestBody: RequestBody) {
         var apiClient = ApiClient.buildService(ApiInterface::class.java)
         var registrationCall = apiClient.registerStudent(requestBody)
-        val enqueue: Any = registrationCall.enqueue(object : Callback<RegistrationResponse> {
-            fun onFailure(call: Call<RegistrationResponse>, t: Throwable) {
-                Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
-            }
+        val enqueue: Any = registrationCall.enqueue(object : Callback<RegistrationResponse1> {
+            fun onFailure(
+                call: Call<RegistrationResponse1>,
+                t: Throwable
+            ) =
+                makeText(baseContext, t.message, LENGTH_LONG).show()
 
             fun onResponse(
-                call: Call<RegistrationResponse>,
-                response: Response<RegistrationResponse>
-            ) {
+                call: Call<RegistrationResponse1>,
+                response: Response<RegistrationResponse1>
+            ): Any {
                 if (response.isSuccessful) {
-                    Toast.makeText(baseContext, response.body()?.message, Toast.LENGTH_LONG).show()
+                    makeText(baseContext, response.body()?.message, LENGTH_LONG).show()
                     startActivity(Intent(baseContext, MainActivity::class.java))
                 } else {
-                    Toast.makeText(baseContext, response.errorBody().toString(), Toast.LENGTH_LONG)
-                        .show()
+                    val show: Any =
+                        makeText(baseContext, response.errorBody().toString(), LENGTH_LONG)
+                            .show()
+                    when {
+                        !!!status.equals("Success!") -> {
+                        }
+                        else -> {
+                            // ADD  to save  and  read next time
+                            String strUserName = mEditText1.getText().toString().trim();
+                            String strPassword = mEditText2.getText().toString().trim();
+                            if (null == strUserName || strUserName.length() == 0) {
+                                // showToast("Enter Your Name");
+                                mEditText1.setError( "username is required!" );
+                                boolean isUserValidated = false;
+                            }
+                            if (null == strPassword || strPassword.length() == 0) {
+                                // showToast("Enter Your Password");
+                                //isPasswordValidated = false;
+                                mEditText2.setError( "password is required!" );
+                            }
+                        }
+                    }
                 }
+            }
+
+            inner class Response<T> {
+
+                val isSuccessful: Boolean = false
             }
         })
     }
-}
+
 
 interface RequestBody {
+
 
 }
 }
