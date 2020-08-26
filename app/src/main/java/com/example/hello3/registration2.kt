@@ -1,97 +1,65 @@
-package com.example.hello3
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.telecom.Call
-import android.view.View
+package com.example.firstapp
+
+import android.animation.ObjectAnimator
 import android.widget.Toast
-import android.widget.Toast.*
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_registration2.*
-import javax.security.auth.callback.Callback
-import com.example.hello3.RegistrationResponse as RegistrationResponse1
 
-class registration2 : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_registration2)
-        btnSignUp.setOnClickListener {
-        var firstName = tvFirstName.text.toString()
-        var lastName = tvLastName.text.toString()
-        var email = tvEmail.text.toString()
-        var phonenumber = tvPhoneNumber.text.toString()
-        var password = tvPassWord.text.toString()
-        var confirmPassword = tvConfirmPassword.text.toString()
+ class registrationactivity2 : AppCompatActivity() {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_registrationactivity2)
+    etRegister.setOnClickListener {
+         run {
+             var firstName = tvFirstName.text.toString()
+             var password = etEnterPassword.text.toString()
+             var lastName = tvLastName.text.toString()
+             var etConfirmEmail = null
+             var email = etConfirmEmail.text.toString()
+             var phoneNumber = tvPhoneNumber.text.toString()
+             var confirmPassword = tvPassWord.text.toString()
 
-            var requestBody = MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("first_name", firstName)
-                .addFormDataPart("last_name", lastName)
-
-                .build()
-
-            registerUser(requestBody)
-            makeText(baseContext, lastName, LENGTH_SHORT).show()
-        }
-    }
-
-
-    fun registerUser(requestBody: RequestBody) {
-        var apiClient = ApiClient.buildService(ApiInterface::class.java)
-        var registrationCall = apiClient.registerStudent(requestBody)
-        val enqueue: Any = registrationCall.enqueue(object : Callback<RegistrationResponse1> {
-            fun onFailure(
-                call: Call<RegistrationResponse1>,
-                t: Throwable
-            ) =
-                makeText(baseContext, t.message, LENGTH_LONG).show()
-
-            fun onResponse(
-                call: Call<RegistrationResponse1>,
-                response: Response<RegistrationResponse1>
-            ): Any {
-                if (response.isSuccessful) {
-                    makeText(baseContext, response.body()?.message, LENGTH_LONG).show()
-                    startActivity(Intent(baseContext, MainActivity::class.java))
-                } else {
-                    val show: Any =
-                        makeText(baseContext, response.errorBody().toString(), LENGTH_LONG)
-                            .show()
-                    when {
-                        !!!status.equals("Success!") -> {
-                        }
-                        else -> {
-                            // ADD  to save  and  read next time
-                            String strUserName = mEditText1.getText().toString().trim();
-                            String strPassword = mEditText2.getText().toString().trim();
-                            if (null == strUserName || strUserName.length() == 0) {
-                                // showToast("Enter Your Name");
-                                mEditText1.setError( "username is required!" );
-                                boolean isUserValidated = false;
-                            }
-                            if (null == strPassword || strPassword.length() == 0) {
-                                // showToast("Enter Your Password");
-                                //isPasswordValidated = false;
-                                mEditText2.setError( "password is required!" );
-                            }
-                        }
-                    }
-                }
-            }
-
-            inner class Response<T> {
-
-                val isSuccessful: Boolean = false
-            }
-        })
-    }
+             if (firstName.isBlank() || firstName.isEmpty()) {
+                 tvFirstName.error = "First Name is required"
+             }
+             if (lastName.isBlank() || lastName.isEmpty()) {
+                 tvLastName.error = "Last Name is required"
+             }
+             if (email.isBlank() || email.isEmpty()) {
+                 tvEmail.error = "Email is required"
+             }
+             if (phoneNumber.isBlank() || phoneNumber.isEmpty()) {
+                 tvPhoneNumber.error = "Phone Number is required"
+             }
+             if (password.isBlank() || password.isEmpty()) {
+                 etPassword.error = "Password is required"
+             }
+             if (confirmPassword.isBlank() || confirmPassword.isEmpty()) {
+                 etPassword.error = "Confirm your password"
+             }
+             progressBar.max = 1000
+             val currentProgress = 600
+             ObjectAnimator.ofInt(progressBar, "progress", currentProgress)
+                 .setDuration(20000)
+                 .start()
 
 
-interface RequestBody {
+             var requestBody = MultipartBody.Builder()
+                 .setType(MultipartBody.FORM)
+                 .addFormDataPart("first_name", firstName)
+                 .addFormDataPart("last_name", lastName)
+                 .addFormDataPart("email", email)
+                 .addFormDataPart("phone_number", phoneNumber)
+                 .addFormDataPart("password", password)
+                 .build()
+
+             //registerUser(requestBody)
+             Toast.makeText(baseContext, password, Toast.LENGTH_LONG).show()
 
 
-}
-}
+         }
 
-    }
-}
+         class MultipartBody {
+
+         }
