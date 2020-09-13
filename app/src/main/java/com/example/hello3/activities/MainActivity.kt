@@ -1,6 +1,8 @@
-package com.example.hello3
+package com.example.hello3.activities
 
 import android.os.Build
+import com.example.hello3.R
+
 import android.os.Bundle
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity

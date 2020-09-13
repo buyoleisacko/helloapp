@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
-import com.example.hello3.MainActivity
+import com.example.hello3.activities.MainActivity
 import com.example.hello3.R
 
 class SplashActivity3 : AppCompatActivity() {
